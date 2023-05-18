@@ -36,7 +36,7 @@ const listadoPokemon = (offset = '0') => {
                         const refactInfoPokemon = {
                             id: id,
                             imagen: sprites.other['official-artwork'].front_default,
-                            nombre: name,
+                            nombre: name.toUpperCase(),
                             hp: stats[0].base_stat,
                             ataque: stats[1].base_stat,
                             defensa: stats[2].base_stat,
