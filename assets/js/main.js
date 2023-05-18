@@ -1,6 +1,6 @@
 const containerpokemon = document.querySelector('.container-pokemon .row')
-const cargarMas = document.querySelector('.btn')
-const reinicio = document.querySelector('.reset')
+const cargarMas = document.querySelector('.add')
+const reinicio = document.querySelector('#reset')
 
 const listadoPokemon = (offset = '0') => {
     fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset}"`)
@@ -52,18 +52,60 @@ const listadoPokemon = (offset = '0') => {
                         <div class="card-body">
                         <p>#${refactInfoPokemon.id}</p>
                         <h5 class="card-title">${refactInfoPokemon.nombre}</h5>
-                        <a href="#" class="btn btn-primary">Estadisticas</a>
+                        <div class="card-body">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-${refactInfoPokemon.id}">
+                        Estadisticas
+                        </button>
                         </div>
                         </div>
                         </div>
-                        `
-                    })
+                        </div>
+                        <div class="modal fade" id="exampleModal-${refactInfoPokemon.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">${refactInfoPokemon.nombre}</h5>
+                            </div>
+                            <div class="modal-body">
+                            <div id="chartContainer" style="height: 300px; max-width: 920px; margin: 0px auto;">
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>`
 
+                        let chart = new CanvasJS.Chart('chartContainer', {
+                            backgroundColor: "transparent",
+                            theme: 'light1',
+                            width: 750,
+                            height: 400,
+                            animationEnabled: true,
+                            animationDuration: 5000,
+                            title: {
+                                text: `a`
+                            },
+                            legend: {
+                                maxWidth: 350,
+                                itemWidth: 120
+                            },
+                            data: [
+                                {
+                                    type: "pie",
+                                    showInLegend: true,
+                                    legendText: "a",
+                                    dataPoints: 'A'
+
+                                }
+                            ]
+                        });
+                        chart.render()
+                    })
             })
         });
 }
 listadoPokemon()
-
 
 cargarMas.addEventListener('click', (e) => {
     e.preventDefault();
