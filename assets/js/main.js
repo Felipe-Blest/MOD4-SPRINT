@@ -32,7 +32,7 @@ const listadoPokemon = (offset = '0') => {
                         console.log(infoPokemon)
                         // del objeto completo extraigo:
                         const { name, sprites, stats, id } = infoPokemon
-                        // refactorizo(? el objeto anterior y defino mis variables
+                        // restructuring del objeto anterior y defino mis variables
                         const refactInfoPokemon = {
                             uid: id,
                             imagen: sprites.other['official-artwork'].front_default,
@@ -48,69 +48,19 @@ const listadoPokemon = (offset = '0') => {
                         console.log('objeto con mis variables:', refactInfoPokemon)
                         containerpokemon.innerHTML += `
                         <div class="col-sm-3 col-md-3 p-2">
-                        <div class="card" style="width: 18rem;">
-                        <img src=${refactInfoPokemon.imagen} alt="${uid} - ${nombre}">
-                        <div class="card-body">
-                        <p>#${uid}</p>
-                        <h5 class="card-title">${nombre}</h5>
-                        <div class="card-body">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-${uid}">
-                        Estadisticas
-                        </button>
-                        </div>
-                        </div>
-                        </div>
-                        </div>
-                        <div class="modal fade" id="exampleModal-${uid}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">${nombre}</h5>
-                        </div>
-                        <div class="modal-body">
-                        <div id="chartContainer" style="height: 300px; max-width: 920px; margin: 0px auto;">
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
-                        </div>
-                        </div>
-                        </div>
+                            <div class="card" style="width: 18rem;">
+                                <img src=${refactInfoPokemon.imagen} alt="${uid} - ${nombre}">
+                                    <div class="card-body">
+                                        <p>#${uid}</p>
+                                        <h5 class="card-title">${nombre}</h5>
+                                    <div class="card-body">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-${uid}">
+                                Estadisticas
+                                </button>
+                            </div>
                         </div>
                         `
-
-                        window.onload = function () {
-                            var chart = new CanvasJS.Chart("chartContainer", {
-                                backgroundColor: "transparent",
-                                theme: 'light1',
-                                width: 600,
-                                height: 400,
-                                animationEnabled: true,
-                                animationDuration: 3000,
-                                title: {
-                                    text: `${nombre}`
-                                },
-                                legend: {
-                                    maxWidth: 350,
-                                    itemWidth: 120
-                                },
-                                data: [
-                                    {
-                                        type: "pie",
-                                        showInLegend: true,
-                                        dataPoints: [
-                                            { y: hp },
-                                            { y: ataque },
-                                            { y: defensa },
-                                            { y: velocidad },
-                                            { y: ataqueEspecial },
-                                            { y: defensaEspecial },
-                                        ]
-                                    }
-                                ]
-                            });
-                            chart.render()
-                        }
-                        // chartPoke(nombre, hp, ataque, defensa, ataqueEspecial, defensaEspecial, velocidad);
+                        chartPoke(nombre, uid, hp, ataque, defensa, ataqueEspecial, defensaEspecial, velocidad);
                     })
 
             })
@@ -120,7 +70,26 @@ listadoPokemon()
 
 
 
-const chartPoke = (nombre, hp, ataque, defensa, ataqueEspecial, defensaEspecial, velocidad) => {
+const chartPoke = (nombre, id, hp, ataque, defensa, ataqueEspecial, defensaEspecial, velocidad) => {
+    insertarModal = document.querySelector('#canvas')
+    insertarModal.innerHTML =
+        `
+        <div class="modal fade" id="exampleModal-${id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">${nombre}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div id="chartContainer" style="height: 300px; max-width: 920px; margin: 0px auto;">
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+    `
 
     var chart = new CanvasJS.Chart("chartContainer", {
         backgroundColor: "transparent",
@@ -142,12 +111,18 @@ const chartPoke = (nombre, hp, ataque, defensa, ataqueEspecial, defensaEspecial,
                 showInLegend: true,
                 legendText: "{indexLabel}",
                 dataPoints: [
-                    { y: parseInt(hp == 'null' ? 0 : hp) },
-                    { y: parseInt(ataque == 'null' ? 0 : ataque) },
-                    { y: parseInt(defensa == 'null' ? 0 : defensa) },
-                    { y: parseInt(velocidad == 'null' ? 0 : velocidad) },
-                    { y: parseInt(ataqueEspecial == 'null' ? 0 : ataqueEspecial) },
-                    { y: parseInt(defensaEspecial == 'null' ? 0 : defensaEspecial) },
+                    { y: (hp == 'null' ? 0 : hp) },
+                    { indexLabel: hp },
+                    { y: (ataque == 'null' ? 0 : ataque) },
+                    { indexLabel: ataque },
+                    { y: (defensa == 'null' ? 0 : defensa) },
+                    { indexLabel: defensa },
+                    { y: (velocidad == 'null' ? 0 : velocidad) },
+                    { indexLabel: velocidad },
+                    { y: (ataqueEspecial == 'null' ? 0 : ataqueEspecial) },
+                    { indexLabel: ataqueEspecial },
+                    { y: (defensaEspecial == 'null' ? 0 : defensaEspecial) },
+                    { indexLabel: defensaEspecial },
                 ]
             }
         ]
