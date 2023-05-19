@@ -3,7 +3,8 @@ const cargarMas = document.querySelector('.add')
 const reinicio = document.querySelector('#reset')
 
 const listadoPokemon = (offset = '0') => {
-    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset}"`)
+    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset}`)
+
         .then(data => {
             if (data.ok) {
                 console.log('Respuesta de la API', data)
@@ -59,22 +60,8 @@ const listadoPokemon = (offset = '0') => {
                                 </button>
                             </div>
                         </div>
-                        `
-                        chartPoke(nombre, uid, hp, ataque, defensa, ataqueEspecial, defensaEspecial, velocidad);
-                    })
 
-            })
-        });
-}
-listadoPokemon()
-
-
-
-const chartPoke = (nombre, id, hp, ataque, defensa, ataqueEspecial, defensaEspecial, velocidad) => {
-    insertarModal = document.querySelector('#canvas')
-    insertarModal.innerHTML =
-        `
-        <div class="modal fade" id="exampleModal-${id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="exampleModal-${id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -89,7 +76,19 @@ const chartPoke = (nombre, id, hp, ataque, defensa, ataqueEspecial, defensaEspec
                 </div>
             </div>
         </div>
-    `
+                        `
+                        chartPoke(nombre, uid, hp, ataque, defensa, ataqueEspecial, defensaEspecial, velocidad);
+                    })
+
+            })
+        });
+}
+listadoPokemon()
+
+
+
+const chartPoke = (nombre, id, hp, ataque, defensa, ataqueEspecial, defensaEspecial, velocidad) => {
+    
 
     var chart = new CanvasJS.Chart("chartContainer", {
         backgroundColor: "transparent",
